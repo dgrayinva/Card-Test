@@ -1,0 +1,86 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Tool</title><style>
+body{font-family:sans-serif;background:#f0f2f5;margin:0;padding:10px;display:flex;justify-content:center;height:100vh;box-sizing:border-box;}
+.split{display:flex;width:100%;gap:15px;height:calc(100vh - 20px);}
+.left{flex:1;max-width:330px;display:flex;flex-direction:column;}
+.right{flex:1.2;display:flex;flex-direction:column;align-items:center;height:100%;overflow-y:auto;padding-top:5px;}
+.box{background:white;padding:12px;border-radius:6px;box-shadow:0 4px 6px rgba(0,0,0,0.05);margin-bottom:10px;box-sizing:border-box;}
+textarea{width:100%;height:110px;margin:4px 0;padding:6px;border:1px solid #cbd5e0;border-radius:4px;font-family:monospace;box-sizing:border-box;font-size:11px;}
+.btn{width:100%;padding:10px;font-weight:bold;border-radius:4px;border:none;cursor:pointer;color:white;margin-top:4px;}
+.go-btn{background:#28a745;}
+.prt-btn{background:#0066cc;font-size:14px;margin-top:4px;}
+.row{display:flex;align-items:center;justify-content:space-between;font-size:11px;margin-bottom:6px;}
+.row label{font-weight:bold;color:#4a5568;}
+select,input[type="color"]{padding:4px;border:1px solid #cbd5e0;border-radius:4px;}
+input[type="color"]{width:40px;height:26px;cursor:pointer;border:none;}
+#preview-area{display:flex;flex-direction:column;gap:40px;align-items:center;width:100%;}
+.env{display:flex;flex-direction:column;align-items:center;background:white;padding:15px;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.05);width:max-content;transform:scale(1.3);transform-origin:top center;margin-bottom:55px;}
+.landscape .card{width:3.375in;height:2.125in;}
+.portrait .card{width:2.125in;height:3.375in;}
+.card{padding:6px;border-radius:12px;box-sizing:border-box;display:flex;flex-direction:column;background:#0033aa;}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;padding:0 4px;}
+.title,.date{color:white;font-size:7pt;font-weight:bold;margin:0;}
+.title{border:none;background:transparent;width:60%;font-family:inherit;}
+.inner{background:white;border-radius:6px;height:max-content;overflow:hidden;display:flex;flex-direction:column;padding:2px;}
+table{width:100%;border-collapse:collapse;table-layout:fixed;}
+th,td{padding:0.2px 1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.05;box-sizing:border-box;font-family:inherit;}
+tr:nth-child(even) td{background-color:#f7f9fc;}
+tr:nth-child(odd) td{background-color:#ffffff;}
+td{border-bottom:1px solid #edf2f7;}
+th{font-weight:bold;}
+th:nth-child(1),td:nth-child(1){width:28%;text-align:left;}
+th:nth-child(2),td:nth-child(2){width:15%;text-align:center;}
+th:nth-child(3),td:nth-child(3){width:28%;text-align:center;}
+th:nth-child(4),td:nth-child(4){width:29%;text-align:center;}
+table input{width:100%;border:none;background:transparent;font-size:7pt!important;padding:0;font-family:inherit;text-align:inherit;color:inherit;}
+th input{font-weight:bold;}
+th:nth-child(1) input,td:nth-child(1) input{text-align:left;}
+th:not(:nth-child(1)) input,td:not(:nth-child(1)) input{text-align:center;}
+input:focus {background:#fffaf0;outline:1px solid #0066cc;}
+@media print{
+  body,html{background:white;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .left,.box,.prt-btn{display:none!important;}
+  .split{display:block;width:100%;height:auto;}
+  .right{width:100%;height:auto;overflow:visible;padding:0;}
+  #preview-area{gap:0;}
+  .env{transform:scale(1.0)!important;margin-bottom:0!important;width:100vw;height:100vh;page-break-after:always;break-after:page;display:flex;justify-content:center;align-items:center;box-shadow:none!important;padding:0!important;}
+}
+</style></head><body>
+  <div class="split">
+    <div class="left">
+      <div class="box">
+        <h3 style="margin:0 0 4px 0;font-size:13px;">Phone Card Generator Tool</h3>
+        <span style="font-size:11px;color:#4a5568;line-height:1.3;display:block;margin-bottom:6px;">Paste Excel rows below including header row. Click green button to preview. All fields are editable.</span>
+        <textarea id="excelPaste" placeholder="Name&#9;Office&#9;Home&#9;Cell&#10;John Doe&#9;456-7896&#9;512-569-7899&#9;542-547-8787"></textarea>
+        <button class="btn go-btn" onclick="build()">📥 Build Cards</button>
+      </div>
+      <div class="box">
+        <div class="row"><label>Orientation:</label><select id="opt" onchange="chk()"><option value="landscape">Landscape</option><option value="portrait">Portrait</option></select></div>
+        <div class="row"><label>Border Color:</label><input type="color" id="cBor" value="#0033aa" oninput="clrs()"></div>
+        <div class="row"><label>Header Bar Color:</label><input type="color" id="cHdr" value="#0033aa" oninput="clrs()"></div>
+        <div class="row"><label>Header Text:</label><input type="color" id="cTxt" value="#ffffff" oninput="clrs()"></div>
+      </div>
+      <button class="btn prt-btn" onclick="window.print()">🖨️ Save PDF</button>
+    </div>
+    <div class="right"><div id="preview-area" class="landscape"><div class="env"><div class="card"><div class="bar"><input type="text" class="title" value="Front Office"><span class="date" id="initDate"></span></div><div class="inner"><table><thead><tr><th style="background:#0033aa;"><input type="text" value="Name" style="color:#ffffff;background:#0033aa;font-size:7pt;"></th><th style="background:#0033aa;"><input type="text" value="Office" style="color:#ffffff;background:#0033aa;font-size:7pt;"></th><th style="background:#0033aa;"><input type="text" value="Home" style="color:#ffffff;background:#0033aa;font-size:7pt;"></th><th style="background:#0033aa;"><input type="text" value="Cell" style="color:#ffffff;background:#0033aa;font-size:7pt;"></th></tr></thead><tbody style="font-size:7pt;"><tr><td><input type="text" value="John D."></td><td><input type="text" value="7896"></td><td><input type="text" value="569-7899"></td><td><input type="text" value="547-8787"></td></tr><tr><td><input type="text" value="David M."></td><td><input type="text" value="7897"></td><td><input type="text" value="569-7900"></td><td><input type="text" value="547-8788"></td></tr></tbody></table></div></div></div></div></div>
+  </div>
+  <script>
+    // Live date layout engine strings standard calendar tokens automatically
+    function getDt(){const d=new Date();const m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return m[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();}
+    document.getElementById('initDate').innerText=getDt();
+
+    function fmt(n){if(!n)return '';const p=n.trim().split(/\s+/);return p.length<2?n:p+' '+p[p.length-1].charAt(0).toUpperCase()+'.';}
+    function trim(s){if(!s)return '---';const c=s.trim();return(c.length>=12&&c.charAt(3)==='-'&&c.charAt(7)==='-')?c.substring(4):c;}
+    function trim4(ex){if(!ex)return '---';const cl=ex.trim();return cl.length>=4?cl.substring(cl.length-4):cl;}
+    function chk(){document.getElementById('preview-area').className=document.getElementById('opt').value;}
+    function clrs(){const b=document.getElementById('cBor').value,h=document.getElementById('cHdr').value,t=document.getElementById('cTxt').value;document.querySelectorAll('.card').forEach(c=>c.style.background=b);document.querySelectorAll('th').forEach(th=>{th.style.background=h;const i=th.querySelector('input');if(i){i.style.color=t;i.style.background=h;}});}
+    function build(){
+      const txt=document.getElementById('excelPaste').value.trim();const canvas=document.getElementById('preview-area');if(!txt)return;const lines=txt.split(/\r?\n/);if(lines.length<2)return;
+      const b=document.getElementById('cBor').value,h=document.getElementById('cHdr').value,t=document.getElementById('cTxt').value,dt=getDt();
+      canvas.innerHTML='';let rows='',cnt=0;const hdrs=lines[0].split('\t');const h1=hdrs[0]||'Name',h2=hdrs[1]||'Office',h3=hdrs[2]||'Home',h4=hdrs[3]||'Cell';
+      for(let i=1; i<lines.length; i++){if(!lines[i].trim())continue;const cols=lines[i].split('\t');cnt++;const n=cols[0]?cols[0].trim():'',e=cols[1]?trim4(cols[1]):'---',d=cols[2]?trim(cols[2]):'---',m=cols[3]?trim(cols[3]):'---';rows+=`<tr><td><input type="text" value="${fmt(n)}"></td><td><input type="text" value="${e}"></td><td><input type="text" value="${d}"></td><td><input type="text" value="${m}"></td></tr>`;}
+      let fSz=cnt<=12?7:Math.max(5.4,7-(cnt-12)*0.4);
+      canvas.insertAdjacentHTML('beforeend',`<div class="env"><div class="card" style="background:${b}"><div class="bar"><input type="text" class="title" value="Front Office"><span class="date">${dt}</span></div><div class="inner"><table><thead><tr><th style="background:${h}"><input type="text" value="${h1}" style="color:${t};background:${h}"></th><th style="background:${h}"><input type="text" value="${h2}" style="color:${t};background:${h}"></th><th style="background:${h}"><input type="text" value="${h3}" style="color:${t};background:${h}"></th><th style="background:${h}"><input type="text" value="${h4}" style="color:${t};background:${h}"></th></tr></thead><tbody style="font-size:${fSz}pt">${rows}</tbody></table></div></div></div>`);
+      document.getElementById('excelPaste').value='';chk();clrs();
+    }
+  </script>
+</body></html>
