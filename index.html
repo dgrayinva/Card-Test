@@ -16,11 +16,11 @@ input[type="color"]{width:40px;height:26px;cursor:pointer;border:none;}
 .env{display:flex;flex-direction:column;align-items:center;background:white;padding:15px;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.05);width:max-content;transform:scale(1.3);transform-origin:top center;margin-bottom:55px;}
 .landscape .card{width:3.375in;height:2.125in;}
 .portrait .card{width:2.125in;height:3.375in;}
-.card{padding:5px;border-radius:12px;box-sizing:border-box;display:flex;flex-direction:column;background:#0033aa;}
+.card{padding:3px;border-radius:12px;box-sizing:border-box;display:flex;flex-direction:column;background:#031b54;}
 .bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;padding:0 4px;}
 .title,.date{color:white;font-size:7pt;font-weight:bold;margin:0;}
 .title{border:none;background:transparent;width:60%;font-family:inherit;}
-.inner{background:white;border-radius:6px;height:max-content;overflow:hidden;display:flex;flex-direction:column;padding:0px;}
+.inner{background:white;border-radius:4px;height:max-content;overflow:hidden;display:flex;flex-direction:column;padding:0px;}
 table{width:100%;border-collapse:collapse;table-layout:fixed;}
 th,td{padding:0.2px 1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.05;box-sizing:border-box;font-family:inherit;}
 tr:nth-child(even) td{background-color:#f7f9fc;}
@@ -56,13 +56,13 @@ td input:focus{background:#fffaf0;outline:1px solid #0066cc;}
       </div>
       <div class="box">
         <div class="row"><label>Orientation:</label><select id="opt" onchange="chk()"><option value="landscape">Landscape</option><option value="portrait">Portrait</option></select></div>
-        <div class="row"><label>Border Color:</label><input type="color" id="cBor" value="#0033aa" oninput="clrs()"></div>
+        <div class="row"><label>Border Color:</label><input type="color" id="cBor" value="#031b54" oninput="clrs()"></div>
         <div class="row"><label>Header Bar Color:</label><input type="color" id="cHdr" value="#ffc800" oninput="clrs()"></div>
         <div class="row"><label>Header Text:</label><input type="color" id="cTxt" value="#ffffff" oninput="clrs()"></div>
       </div>
       <button class="btn prt-btn" onclick="window.print()">🖨️ Save PDF</button>
     </div>
-    <div class="right"><div id="preview-area" class="landscape"><div class="env"><div class="card"><div class="bar"><input type="text" class="title" value="Front Office"><span class="date" id="initDate"></span></div><div class="inner"><table><thead><tr><th style="background:#0033aa;"><input type="text" value="Name" style="color:#ffffff;background:#0033aa;font-size:7pt;"></th><th style="background:#0033aa;"><input type="text" value="Office" style="color:#ffffff;background:#0033aa;font-size:7pt;"></th><th style="background:#0033aa;"><input type="text" value="Ext" style="color:#ffffff;background:#0033aa;font-size:7pt;"></th><th style="background:#0033aa;"><input type="text" value="Cell" style="color:#ffffff;background:#0033aa;font-size:7pt;"></th></tr></thead><tbody style="font-size:7pt;"><tr><td><input type="text" value="John D."></td><td><input type="text" value="703-123-7899"></td><td><input type="text" value="12345"></td><td><input type="text" value="542-547-8787"></td></tr><tr><td><input type="text" value="David M."></td><td><input type="text" value="703-123-4566"></td><td><input type="text" value="12345"></td><td><input type="text" value="542-547-8788"></td></tr></tbody></table></div></div></div></div></div>
+    <div class="right"><div id="preview-area" class="landscape"><div class="env"><div class="card"><div class="bar"><input type="text" class="title" value="Enter Text Here"><span class="date" id="initDate"></span></div><div class="inner"><table><thead><tr><th style="background:#0033aa;"><input type="text" value="Name" style="color:#ffffff;background:#0033aa;font-size:7pt;"></th><th style="background:#0033aa;"><input type="text" value="Office" style="color:#ffffff;background:#0033aa;font-size:7pt;"></th><th style="background:#0033aa;"><input type="text" value="Ext" style="color:#ffffff;background:#0033aa;font-size:7pt;"></th><th style="background:#0033aa;"><input type="text" value="Cell" style="color:#ffffff;background:#0033aa;font-size:7pt;"></th></tr></thead><tbody style="font-size:7pt;"><tr><td><input type="text" value="Bourbon D."></td><td><input type="text" value="703-123-7899"></td><td><input type="text" value="12345"></td><td><input type="text" value="542-547-8787"></td></tr><tr><td><input type="text" value="Rye W."></td><td><input type="text" value="703-123-4566"></td><td><input type="text" value="12345"></td><td><input type="text" value="542-547-8788"></td></tr></tbody></table></div></div></div></div></div>
   </div>
   <script>
     function getDt(){const d=new Date();const m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return m[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();}
@@ -85,7 +85,7 @@ td input:focus{background:#fffaf0;outline:1px solid #0066cc;}
       const n=cols[0]?cols[0].trim():'',e=cols[1]?cols[1].trim():'---',d=cols[2]?cols[2].trim():'---',m=cols[3]?cols[3].trim():'---';
       rows+=`<tr><td><input type="text" value="${fmt(n)}"></td><td><input type="text" value="${e}"></td><td><input type="text" value="${d}"></td><td><input type="text" value="${m}"></td></tr>`;}
       let fSz=cnt<12?7:Math.max(5.4,7-(cnt-12)*0.4);
-      canvas.insertAdjacentHTML('beforeend',`<div class="env"><div class="card" style="background:${b}"><div class="bar"><input type="text" class="title" value="Front Office"><span class="date">${dt}</span></div><div class="inner"><table><thead><tr><th style="background:${h}"><input type="text" value="${h1}" style="color:${t};background:${h}"></th><th style="background:${h}"><input type="text" value="${h2}" style="color:${t};background:${h}"></th><th style="background:${h}"><input type="text" value="${h3}" style="color:${t};background:${h}"></th><th style="background:${h}"><input type="text" value="${h4}" style="color:${t};background:${h}"></th></tr></thead><tbody style="font-size:${fSz}pt">${rows}</tbody></table></div></div></div>`);
+      canvas.insertAdjacentHTML('beforeend',`<div class="env"><div class="card" style="background:${b}"><div class="bar"><input type="text" class="title" value="Enter Text Here"><span class="date">${dt}</span></div><div class="inner"><table><thead><tr><th style="background:${h}"><input type="text" value="${h1}" style="color:${t};background:${h}"></th><th style="background:${h}"><input type="text" value="${h2}" style="color:${t};background:${h}"></th><th style="background:${h}"><input type="text" value="${h3}" style="color:${t};background:${h}"></th><th style="background:${h}"><input type="text" value="${h4}" style="color:${t};background:${h}"></th></tr></thead><tbody style="font-size:${fSz}pt">${rows}</tbody></table></div></div></div>`);
       document.getElementById('excelPaste').value='';chk();clrs();
     }
   </script>
